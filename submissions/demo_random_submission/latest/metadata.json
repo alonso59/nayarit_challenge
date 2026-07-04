@@ -1,0 +1,12 @@
+{
+  "student_id": "demo_random_submission",
+  "student_name": "Demo Random Submission",
+  "model_name": "RandomBaseline",
+  "num_parameters": 123456,
+  "validation_accuracy": 0.2,
+  "validation_f1_macro": 0.2,
+  "issue_number": 2,
+  "submitted_at": "2026-07-04T14:11:01Z",
+  "submission_zip_url": "https://raw.githubusercontent.com/alonso59/nayarit_challenge/main/examples/demo_random_submission/submission.zip",
+  "notes": "Smoke test aleatorio para dejar una entrega visible de ejemplo en la leaderboard."
+}
