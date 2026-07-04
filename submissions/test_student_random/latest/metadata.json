@@ -1,0 +1,13 @@
+{
+  "student_id": "test_student_random",
+  "student_name": "Workflow Smoke Test",
+  "model_name": "RandomBaseline",
+  "num_parameters": 123456,
+  "validation_accuracy": 0.2,
+  "validation_f1_macro": 0.2,
+  "issue_number": 1,
+  "submitted_at": "2026-07-04T13:52:06Z",
+  "predictions_csv_url": "https://raw.githubusercontent.com/alonso59/nayarit_challenge/test-submission-assets-20260704154235/test_assets/random_submission/predictions.csv",
+  "ablations_md_url": "https://raw.githubusercontent.com/alonso59/nayarit_challenge/test-submission-assets-20260704154235/test_assets/random_submission/ABLATIONS.md",
+  "notes": "Automated workflow smoke test with deterministic random class predictions. This is not a real student submission.\n\nRerun after configuring TEST_LABELS_SSH_KEY."
+}
