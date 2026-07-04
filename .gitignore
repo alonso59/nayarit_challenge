@@ -10,3 +10,5 @@ venv/
 # Temporary files created by the submission workflow.
 .submission_work/
 
+# Keep hidden labels out of public or student-readable repositories.
+data/private/test_labels.csv

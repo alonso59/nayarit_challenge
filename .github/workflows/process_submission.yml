@@ -25,6 +25,32 @@ jobs:
       - name: Install dependencies
         run: pip install pandas requests
 
+      - name: Prepare hidden test labels
+        env:
+          TEST_LABELS_CSV_URL: ${{ secrets.TEST_LABELS_CSV_URL }}
+          TEST_LABELS_TOKEN: ${{ secrets.TEST_LABELS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -f data/private/test_labels.csv ]; then
+            echo "Using data/private/test_labels.csv from the checkout."
+            exit 0
+          fi
+
+          if [ -z "${TEST_LABELS_CSV_URL:-}" ]; then
+            echo "::warning::Hidden labels were not found and TEST_LABELS_CSV_URL is not configured."
+            exit 0
+          fi
+
+          mkdir -p data/private
+          if [ -n "${TEST_LABELS_TOKEN:-}" ]; then
+            curl -fsSL \
+              -H "Authorization: Bearer ${TEST_LABELS_TOKEN}" \
+              "${TEST_LABELS_CSV_URL}" \
+              -o data/private/test_labels.csv
+          else
+            curl -fsSL "${TEST_LABELS_CSV_URL}" -o data/private/test_labels.csv
+          fi
+
       - name: Process submission
         id: process
         continue-on-error: true
@@ -93,10 +119,33 @@ jobs:
             reject_with_log "$(cat .submission_work/error.txt)"
           fi
 
-          message="Files were validated and archived under \`submissions/$(python -c 'import json; print(json.load(open(".submission_work/metadata.json"))["team_id"])')/latest/\`."
+          if ! python scripts/evaluate_submission.py \
+            --predictions .submission_work/predictions.csv \
+            --labels data/private/test_labels.csv \
+            --metadata .submission_work/metadata.json \
+            --output .submission_work/metrics.json \
+            2> .submission_work/error.txt; then
+            reject_with_log "$(cat .submission_work/error.txt)"
+          fi
+
+          student_id="$(python -c 'import json; print(json.load(open(".submission_work/metadata.json"))["student_id"])')"
+          metrics_summary="$(python - <<'PY'
+          import json
+
+          metrics = json.load(open(".submission_work/metrics.json", encoding="utf-8"))
+          print(f"Final score: {metrics['final_score']:.6f}")
+          print(f"Test macro F1: {metrics['macro_f1']:.6f}")
+          print(f"Test accuracy: {metrics['accuracy']:.6f}")
+          print(f"Efficiency score: {metrics['efficiency_score']:.6f}")
+          PY
+          )"
+          message="Files were validated, evaluated, and archived under \`submissions/${student_id}/latest/\`.
+
+          ${metrics_summary}"
           if ! python scripts/update_submission_index.py \
             --metadata .submission_work/metadata.json \
             --work-dir .submission_work \
+            --metrics .submission_work/metrics.json \
             --status accepted \
             --message "$message" \
             2> .submission_work/error.txt; then

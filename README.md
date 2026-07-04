@@ -2,14 +2,14 @@
 
 This repository receives student submissions for the CNN image classification
 leaderboard challenge. Students do not push directly to this repository.
-Instead, each team opens a GitHub Issue with the `Model submission` form and
+Instead, each student opens a GitHub Issue with the `Model submission` form and
 provides direct download links for two files:
 
 - `predictions.csv`
 - `ABLATIONS.md`
 
-This first version validates and archives submissions only. Hidden-label test
-evaluation will be added later.
+The workflow validates each submission, evaluates it against hidden test labels,
+archives the student's latest valid attempt, and updates the leaderboard.
 
 ## Student Workflow
 
@@ -33,9 +33,8 @@ evaluation will be added later.
 
 ## Required Issue Form Fields
 
-- `team_id`
-- `team_name`
-- `student_names`
+- `student_id`
+- `student_name`
 - `model_name`
 - `num_parameters`
 - `validation_accuracy`
@@ -72,15 +71,65 @@ Validation rules:
 The workflow never executes student code and never installs student
 dependencies.
 
+## Hidden Test Evaluation
+
+The evaluator expects hidden labels at:
+
+```text
+data/private/test_labels.csv
+```
+
+The CSV must contain at least these columns:
+
+```csv
+id,label
+```
+
+It may contain extra instructor-only columns such as `filename` or `class_name`.
+
+Do not commit hidden labels to a public or student-readable repository. The
+recommended setup is:
+
+1. Store the hidden labels in a private location controlled by the instructor.
+2. Add a repository secret named `TEST_LABELS_CSV_URL` with a direct download URL
+   for `test_labels.csv`.
+3. If the URL needs authentication, add a repository secret named
+   `TEST_LABELS_TOKEN`.
+
+If this repository is private and students cannot read its contents, the
+instructor may also place the file directly at `data/private/test_labels.csv`.
+That file is ignored by `.gitignore` by default to reduce the risk of accidental
+publication. If the instructor intentionally wants to version it in a private
+evaluator repository, use `git add -f data/private/test_labels.csv` or remove
+that ignore rule.
+
+The workflow checks that submitted IDs match the hidden test IDs exactly. Missing
+or unknown IDs cause rejection.
+
+## Scoring
+
+The workflow computes:
+
+```text
+final_score = 0.70 * macro_f1 + 0.20 * accuracy + 0.10 * efficiency_score
+```
+
+There is no maximum parameter limit. The current efficiency rule is:
+
+```text
+efficiency_score = min(1.0, 100000 / num_parameters)
+```
+
+This keeps `efficiency_score` in the range `[0, 1]`, gives full efficiency credit
+to models with at most 100,000 parameters, and gradually penalizes larger models
+without disqualifying them.
+
 ## Instructor Policy
 
-Each `team_id` has only one visible latest submission. If a team submits again,
-the files in `submissions/<team_id>/latest/` are overwritten.
+Each `student_id` has only one visible latest submission. If a student submits
+again, the files in `submissions/<student_id>/latest/` are overwritten.
 
 All processed attempts that can be parsed are recorded in
 `leaderboard/submissions_log.csv`. The public summary in
 `leaderboard/latest_submissions.md` shows only the latest accepted submission per
-team.
-
-Hidden test evaluation is not implemented yet.
-
+student, ranked by `final_score`.

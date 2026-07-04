@@ -13,9 +13,8 @@ from urllib.parse import urlparse
 
 
 REQUIRED_FIELDS = [
-    "team_id",
-    "team_name",
-    "student_names",
+    "student_id",
+    "student_name",
     "model_name",
     "num_parameters",
     "validation_accuracy",
@@ -27,9 +26,16 @@ REQUIRED_FIELDS = [
 OPTIONAL_FIELDS = ["notes"]
 
 FIELD_ALIASES = {
-    "team_id": ["team_id", "team id", "team identifier"],
-    "team_name": ["team_name", "team name"],
-    "student_names": ["student_names", "student names", "students"],
+    "student_id": ["student_id", "student id", "student identifier", "team_id", "team id"],
+    "student_name": [
+        "student_name",
+        "student name",
+        "student_names",
+        "student names",
+        "students",
+        "team_name",
+        "team name",
+    ],
     "model_name": ["model_name", "model name"],
     "num_parameters": ["num_parameters", "num parameters", "parameters", "params"],
     "validation_accuracy": ["validation_accuracy", "validation accuracy", "val acc"],
@@ -49,7 +55,7 @@ FIELD_ALIASES = {
 }
 
 NO_RESPONSE_VALUES = {"", "_no response_", "no response", "n/a", "na", "none"}
-TEAM_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$")
+STUDENT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$")
 
 
 def normalize_label(value: str) -> str:
@@ -122,10 +128,10 @@ def build_metadata(event: dict) -> dict:
     if missing:
         raise ValueError(f"Missing required issue form fields: {', '.join(missing)}.")
 
-    team_id = values["team_id"].strip()
-    if not TEAM_ID_RE.fullmatch(team_id):
+    student_id = values["student_id"].strip()
+    if not STUDENT_ID_RE.fullmatch(student_id):
         raise ValueError(
-            "team_id may contain only letters, numbers, underscores, periods, "
+            "student_id may contain only letters, numbers, underscores, periods, "
             "and hyphens, and must be 1-64 characters."
         )
 
@@ -134,9 +140,8 @@ def build_metadata(event: dict) -> dict:
     validation_f1_macro = parse_float(values["validation_f1_macro"], "validation_f1_macro")
 
     metadata = {
-        "team_id": team_id,
-        "team_name": values["team_name"].strip(),
-        "student_names": values["student_names"].strip(),
+        "student_id": student_id,
+        "student_name": values["student_name"].strip(),
         "model_name": values["model_name"].strip(),
         "num_parameters": num_parameters,
         "validation_accuracy": validation_accuracy,
@@ -185,4 +190,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
