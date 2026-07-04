@@ -27,6 +27,9 @@ jobs:
 
       - name: Prepare hidden test labels
         env:
+          TEST_LABELS_SSH_KEY: ${{ secrets.TEST_LABELS_SSH_KEY }}
+          TEST_LABELS_PRIVATE_REPO: git@github.com:alonso59/test_set_nayarit_challenge1.git
+          TEST_LABELS_PRIVATE_PATH: test_labels.csv
           TEST_LABELS_CSV_URL: ${{ secrets.TEST_LABELS_CSV_URL }}
           TEST_LABELS_TOKEN: ${{ secrets.TEST_LABELS_TOKEN }}
         run: |
@@ -36,12 +39,25 @@ jobs:
             exit 0
           fi
 
-          if [ -z "${TEST_LABELS_CSV_URL:-}" ]; then
-            echo "::warning::Hidden labels were not found and TEST_LABELS_CSV_URL is not configured."
+          mkdir -p data/private
+
+          if [ -n "${TEST_LABELS_SSH_KEY:-}" ]; then
+            eval "$(ssh-agent -s)"
+            trap 'ssh-agent -k >/dev/null' EXIT
+            ssh-add - <<< "${TEST_LABELS_SSH_KEY}"
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git clone --depth 1 "${TEST_LABELS_PRIVATE_REPO}" .hidden_test_labels
+            cp ".hidden_test_labels/${TEST_LABELS_PRIVATE_PATH}" data/private/test_labels.csv
+            echo "Downloaded hidden labels from private repository."
             exit 0
           fi
 
-          mkdir -p data/private
+          if [ -z "${TEST_LABELS_CSV_URL:-}" ]; then
+            echo "::warning::Hidden labels were not found. Configure TEST_LABELS_SSH_KEY or TEST_LABELS_CSV_URL."
+            exit 0
+          fi
+
           if [ -n "${TEST_LABELS_TOKEN:-}" ]; then
             curl -fsSL \
               -H "Authorization: Bearer ${TEST_LABELS_TOKEN}" \

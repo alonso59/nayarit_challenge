@@ -90,11 +90,57 @@ It may contain extra instructor-only columns such as `filename` or `class_name`.
 Do not commit hidden labels to a public or student-readable repository. The
 recommended setup is:
 
-1. Store the hidden labels in a private location controlled by the instructor.
-2. Add a repository secret named `TEST_LABELS_CSV_URL` with a direct download URL
-   for `test_labels.csv`.
-3. If the URL needs authentication, add a repository secret named
-   `TEST_LABELS_TOKEN`.
+1. Store the hidden labels in the private repository
+   `alonso59/test_set_nayarit_challenge1`.
+2. Put the file at the repository root:
+
+   ```text
+   test_labels.csv
+   ```
+
+3. Configure a repository secret named `TEST_LABELS_SSH_KEY` in this leaderboard
+   repository. The secret must contain an SSH private key that can read
+   `alonso59/test_set_nayarit_challenge1`.
+
+Recommended GitHub setup:
+
+1. Create a dedicated SSH key pair for the workflow:
+
+   ```bash
+   ssh-keygen -t ed25519 -C "nayarit-challenge-hidden-labels" -f ~/.ssh/nayarit_challenge_hidden_labels
+   ```
+
+2. In the private labels repository, add the public key as a read-only deploy
+   key:
+
+   ```text
+   https://github.com/alonso59/test_set_nayarit_challenge1/settings/keys
+   ```
+
+   Use the contents of:
+
+   ```text
+   ~/.ssh/nayarit_challenge_hidden_labels.pub
+   ```
+
+3. In this leaderboard repository, open:
+
+   ```text
+   Settings -> Secrets and variables -> Actions -> New repository secret
+   ```
+
+4. Add:
+
+   ```text
+   TEST_LABELS_SSH_KEY=<contents of ~/.ssh/nayarit_challenge_hidden_labels>
+   ```
+
+With this secret configured, the workflow downloads the hidden labels on every
+submission without instructor intervention. Students can submit through issues,
+but they cannot see the hidden label file or key.
+
+The workflow still supports an HTTPS fallback using `TEST_LABELS_CSV_URL` and
+`TEST_LABELS_TOKEN`, but the SSH deploy key path is preferred for this challenge.
 
 If this repository is private and students cannot read its contents, the
 instructor may also place the file directly at `data/private/test_labels.csv`.
