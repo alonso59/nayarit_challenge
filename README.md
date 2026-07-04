@@ -3,7 +3,11 @@
 This repository receives student submissions for the CNN image classification
 leaderboard challenge. Students do not push directly to this repository.
 Instead, each student opens a GitHub Issue with the `Model submission` form and
-provides direct download links for two files:
+uploads one ZIP file:
+
+- `submission.zip`
+
+The ZIP must contain:
 
 - `predictions.csv`
 - `ABLATIONS.md`
@@ -24,10 +28,9 @@ archives the student's latest valid attempt, and updates the leaderboard.
    ```
 
 3. Write `ABLATIONS.md` describing ablations or experiments.
-4. Push both files to your own repository or fork.
-5. Copy the raw URL for each file. GitHub raw URLs usually begin with
-   `https://raw.githubusercontent.com/...`.
-6. Open a new issue in this repository using the `Model submission` form.
+4. Create `submission.zip` containing `predictions.csv` and `ABLATIONS.md`.
+5. Open a new issue in this repository using the `Model submission` form.
+6. Upload `submission.zip` in the form.
 7. Submit the form.
 8. Wait for the GitHub Actions confirmation comment.
 
@@ -39,8 +42,7 @@ archives the student's latest valid attempt, and updates the leaderboard.
 - `num_parameters`
 - `validation_accuracy`
 - `validation_f1_macro`
-- `predictions_csv_url`
-- `ablations_md_url`
+- `submission_zip`
 
 The optional field is `notes`.
 

@@ -7,8 +7,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Provide direct downloadable URLs for `predictions.csv` and `ABLATIONS.md`.
-        Raw GitHub URLs are recommended.
+        Upload one `submission.zip` file containing:
+
+        - `predictions.csv`
+        - `ABLATIONS.md`
 
   - type: input
     id: student_id
@@ -62,23 +64,14 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: predictions_csv_url
+  - type: upload
+    id: submission_zip
     attributes:
-      label: predictions_csv_url
-      description: Raw GitHub URL or any direct downloadable URL for `predictions.csv`.
-      placeholder: https://raw.githubusercontent.com/example/repo/main/predictions.csv
+      label: submission_zip
+      description: Upload a ZIP containing `predictions.csv` and `ABLATIONS.md`.
     validations:
       required: true
-
-  - type: input
-    id: ablations_md_url
-    attributes:
-      label: ablations_md_url
-      description: Raw GitHub URL or any direct downloadable URL for `ABLATIONS.md`.
-      placeholder: https://raw.githubusercontent.com/example/repo/main/ABLATIONS.md
-    validations:
-      required: true
+      accept: ".zip"
 
   - type: textarea
     id: notes
