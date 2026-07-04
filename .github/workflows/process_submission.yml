@@ -1,0 +1,144 @@
+name: Process submission
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  process-submission:
+    if: contains(github.event.issue.labels.*.name, 'submission')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pandas requests
+
+      - name: Process submission
+        id: process
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p .submission_work
+
+          write_comment() {
+            local status="$1"
+            local message="$2"
+            if [ "$status" = "accepted" ]; then
+              {
+                echo "Submission accepted."
+                echo
+                echo "$message"
+              } > .submission_work/issue_comment.md
+            else
+              {
+                echo "Submission rejected."
+                echo
+                echo "$message"
+              } > .submission_work/issue_comment.md
+            fi
+          }
+
+          reject_with_log() {
+            local message="$1"
+            if python scripts/update_submission_index.py \
+              --metadata .submission_work/metadata.json \
+              --status rejected \
+              --message "$message" \
+              2> .submission_work/index_error.txt; then
+              echo "logged=true" >> "$GITHUB_OUTPUT"
+            else
+              message="$message Index update also failed: $(cat .submission_work/index_error.txt)"
+              echo "logged=false" >> "$GITHUB_OUTPUT"
+            fi
+            echo "status=rejected" >> "$GITHUB_OUTPUT"
+            write_comment "rejected" "$message"
+            exit 1
+          }
+
+          if ! python scripts/parse_issue_form.py \
+            --event-path "$GITHUB_EVENT_PATH" \
+            --output .submission_work/metadata.json \
+            2> .submission_work/error.txt; then
+            message="$(cat .submission_work/error.txt)"
+            echo "logged=false" >> "$GITHUB_OUTPUT"
+            echo "status=rejected" >> "$GITHUB_OUTPUT"
+            write_comment "rejected" "$message"
+            exit 1
+          fi
+
+          if ! python scripts/download_submission_files.py \
+            --metadata .submission_work/metadata.json \
+            --output-dir .submission_work \
+            2> .submission_work/error.txt; then
+            reject_with_log "$(cat .submission_work/error.txt)"
+          fi
+
+          if ! python scripts/validate_submission.py \
+            --predictions .submission_work/predictions.csv \
+            --ablations .submission_work/ABLATIONS.md \
+            2> .submission_work/error.txt; then
+            reject_with_log "$(cat .submission_work/error.txt)"
+          fi
+
+          message="Files were validated and archived under \`submissions/$(python -c 'import json; print(json.load(open(".submission_work/metadata.json"))["team_id"])')/latest/\`."
+          if ! python scripts/update_submission_index.py \
+            --metadata .submission_work/metadata.json \
+            --work-dir .submission_work \
+            --status accepted \
+            --message "$message" \
+            2> .submission_work/error.txt; then
+            message="$(cat .submission_work/error.txt)"
+            echo "logged=false" >> "$GITHUB_OUTPUT"
+            echo "status=rejected" >> "$GITHUB_OUTPUT"
+            write_comment "rejected" "$message"
+            exit 1
+          fi
+          echo "logged=true" >> "$GITHUB_OUTPUT"
+          echo "status=accepted" >> "$GITHUB_OUTPUT"
+          write_comment "accepted" "$message"
+
+      - name: Commit repository updates
+        if: steps.process.outputs.logged == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add submissions leaderboard
+          if git diff --cached --quiet; then
+            echo "No repository changes to commit."
+            exit 0
+          fi
+          git commit -m "Process submission issue #${{ github.event.issue.number }}"
+          git push
+
+      - name: Comment on issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const body = fs.existsSync(".submission_work/issue_comment.md")
+              ? fs.readFileSync(".submission_work/issue_comment.md", "utf8")
+              : "Submission rejected.\n\nThe workflow did not produce a detailed error message.";
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+      - name: Fail job if submission was rejected
+        if: steps.process.outcome == 'failure'
+        run: exit 1

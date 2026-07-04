@@ -1,0 +1,2 @@
+submission_id,submitted_at,issue_number,team_id,team_name,student_names,model_name,num_parameters,validation_accuracy,validation_f1_macro,predictions_csv_url,ablations_md_url,status,message
+

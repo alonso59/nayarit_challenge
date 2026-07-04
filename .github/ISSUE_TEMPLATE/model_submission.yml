@@ -1,0 +1,99 @@
+name: Model submission
+description: Submit CNN challenge predictions and ablation notes.
+title: "Model submission: "
+labels:
+  - submission
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Provide direct downloadable URLs for `predictions.csv` and `ABLATIONS.md`.
+        Raw GitHub URLs are recommended.
+
+  - type: input
+    id: team_id
+    attributes:
+      label: team_id
+      description: Stable team identifier, for example `team_01`.
+      placeholder: team_01
+    validations:
+      required: true
+
+  - type: input
+    id: team_name
+    attributes:
+      label: team_name
+      placeholder: Example Team
+    validations:
+      required: true
+
+  - type: input
+    id: student_names
+    attributes:
+      label: student_names
+      description: Names of all students on the team.
+      placeholder: Student A, Student B
+    validations:
+      required: true
+
+  - type: input
+    id: model_name
+    attributes:
+      label: model_name
+      placeholder: SmallCNN
+    validations:
+      required: true
+
+  - type: input
+    id: num_parameters
+    attributes:
+      label: num_parameters
+      description: Total trainable parameter count as an integer.
+      placeholder: "123456"
+    validations:
+      required: true
+
+  - type: input
+    id: validation_accuracy
+    attributes:
+      label: validation_accuracy
+      description: Validation accuracy reported by the team.
+      placeholder: "0.82"
+    validations:
+      required: true
+
+  - type: input
+    id: validation_f1_macro
+    attributes:
+      label: validation_f1_macro
+      description: Macro F1 score reported by the team.
+      placeholder: "0.81"
+    validations:
+      required: true
+
+  - type: input
+    id: predictions_csv_url
+    attributes:
+      label: predictions_csv_url
+      description: Raw GitHub URL or any direct downloadable URL for `predictions.csv`.
+      placeholder: https://raw.githubusercontent.com/example/repo/main/predictions.csv
+    validations:
+      required: true
+
+  - type: input
+    id: ablations_md_url
+    attributes:
+      label: ablations_md_url
+      description: Raw GitHub URL or any direct downloadable URL for `ABLATIONS.md`.
+      placeholder: https://raw.githubusercontent.com/example/repo/main/ABLATIONS.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: notes
+      description: Optional notes for instructors.
+    validations:
+      required: false
+
