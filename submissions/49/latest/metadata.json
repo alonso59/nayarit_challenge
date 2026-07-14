@@ -1,0 +1,12 @@
+{
+  "student_id": "49",
+  "student_name": "Stephany Anahí López Lizárraga",
+  "model_name": "SimpleCNN",
+  "num_parameters": 61189,
+  "validation_accuracy": 0.716,
+  "validation_f1_macro": 0.713,
+  "issue_number": 3,
+  "submitted_at": "2026-07-14T20:01:45Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/30023007/submission.zip",
+  "notes": ""
+}
