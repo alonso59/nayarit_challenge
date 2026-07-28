@@ -1,0 +1,12 @@
+{
+  "student_id": "jcaquino_utnay",
+  "student_name": "Juan Carlos Aquino Hernández",
+  "model_name": "SimpleCNN-v5-residual",
+  "num_parameters": 158277,
+  "validation_accuracy": 0.828,
+  "validation_f1_macro": 0.8265,
+  "issue_number": 4,
+  "submitted_at": "2026-07-28T04:36:33Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/30443358/submission.zip",
+  "notes": "Se realizaron 5 iteraciones documentadas en ABLATIONS.md. Modelo final: CNN con bloque residual\n+ Global Average Pooling (158K params), balanceando accuracy (82.8%), F1 macro (0.8265)\nY el término de eficiencia del score final en la ecuación de evaluación tiene más ponderación."
+}
