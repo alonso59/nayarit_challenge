@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_17",
+  "student_name": "Christian Ulises Mora Figueroa",
+  "model_name": "CNN simple",
+  "num_parameters": 19909,
+  "validation_accuracy": 0.5887,
+  "validation_f1_macro": 0.5565,
+  "issue_number": 7,
+  "submitted_at": "2026-08-08T20:04:29Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/30862761/submission.2.zip",
+  "notes": "Muy interesante!!!"
+}
