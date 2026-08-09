@@ -1,0 +1,12 @@
+{
+  "student_id": "AlexCampos",
+  "student_name": "Alejandro Campos Martínez",
+  "model_name": "SimpleCNN-residual",
+  "num_parameters": 94973,
+  "validation_accuracy": 0.801,
+  "validation_f1_macro": 0.8015,
+  "issue_number": 8,
+  "submitted_at": "2026-08-09T00:12:36Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/30865397/submission.zip",
+  "notes": "Modelo SimpleCNN con bloque residual, entrenado 30 epocas con scheduler CosineAnnealingLR y augmentations reforzadas (ColorJitter + RandomErasing). Ver ABLATIONS.md para el detalle de los 4 experimentos realizados."
+}
