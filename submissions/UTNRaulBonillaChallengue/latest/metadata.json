@@ -1,0 +1,12 @@
+{
+  "student_id": "UTNRaulBonillaChallengue",
+  "student_name": "Sergio Raul Bonilla Alejo",
+  "model_name": "SimpleCNN3capas",
+  "num_parameters": 93893,
+  "validation_accuracy": 0.614,
+  "validation_f1_macro": 0.6057,
+  "issue_number": 9,
+  "submitted_at": "2026-08-13T06:33:12Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31015958/submission.zip",
+  "notes": "Adjunto Proyecto Challengue UT Nayarit Sergio Raul Bonilla Alejo"
+}
