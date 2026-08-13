@@ -1,0 +1,8 @@
+{
+  "num_test_examples": 2500,
+  "accuracy": 0.7832,
+  "macro_f1": 0.785154,
+  "efficiency_score": 0.191013,
+  "final_score": 0.725349,
+  "efficiency_rule": "min(1.0, 100000 / num_parameters); there is no upper parameter limit"
+}

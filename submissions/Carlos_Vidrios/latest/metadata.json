@@ -1,0 +1,12 @@
+{
+  "student_id": "Carlos_Vidrios",
+  "student_name": "Carlos Alberto Vidrios Serrano",
+  "model_name": "CNN_vidrios",
+  "num_parameters": 523525,
+  "validation_accuracy": 0.809,
+  "validation_f1_macro": 0.8109,
+  "issue_number": 12,
+  "submitted_at": "2026-08-13T14:50:13Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31033703/Submission.zip",
+  "notes": ""
+}
