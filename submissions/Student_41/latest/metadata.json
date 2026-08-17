@@ -1,0 +1,12 @@
+{
+  "student_id": "Student_41",
+  "student_name": "Alonso Lopez",
+  "model_name": "SimpleCNN + BatchNorm2d",
+  "num_parameters": 94341,
+  "validation_accuracy": 0.674,
+  "validation_f1_macro": 0.6641,
+  "issue_number": 14,
+  "submitted_at": "2026-08-17T19:22:45Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31152356/submission_alonsolopez.zip",
+  "notes": "Se desarrolló una CNN entrenada desde cero para clasificar imágenes del dataset STL-5 en cinco clases: airplane, bird, car, cat y dog. El modelo final utiliza tres bloques convolucionales con BatchNorm2d, ReLU y MaxPooling, seguido de Adaptive Average Pooling y una capa fully connected. Se obtuvo una accuracy de validación de 0.6740 y un F1 macro de 0.6641 con 94,341 parámetros entrenables. Las predicciones finales fueron generadas sobre las 2,500 imágenes de test sin utilizar sus etiquetas"
+}
