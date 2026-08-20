@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_29",
+  "student_name": "Jorge Saul Montes Caceres",
+  "model_name": "SimpleCNN-residual-78K_v3",
+  "num_parameters": 78053,
+  "validation_accuracy": 0.803,
+  "validation_f1_macro": 0.8045,
+  "issue_number": 20,
+  "submitted_at": "2026-08-20T05:32:52Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31250300/submission.zip",
+  "notes": "Sigo intentando mejorar usando \"Data Augmentation\" pero las mejores han sido marginales"
+}
