@@ -1,65 +1,24 @@
-# Ablation / Experiment Report
+# Ablation Study
 
-## Student Information
-- **Student Name**: Ricardo_Torres_Lopez
-- **Student ID**: RicardoTL75
+## Final model
 
-## Final Model
-- **Model Name**: CNN_Challenge
-- **Number of Parameters**: 53,485
-- **Parameter Constraint (<95,000)**: PASS
-- **Best Validation Accuracy**: 0.8368
-- **Validation F1-macro at Best Accuracy**: 0.8366
-- **Best Validation Epoch**: 81
+- Architecture: ImprovedCNN with three convolution layers, Batch Normalization, SiLU, pooling, global average pooling, dropout, and a five-class linear output.
+- Trainable parameters: 94,117
+- Parameter constraint below 95,000: PASS
+- Best validation accuracy: 0.7860
+- Best validation macro F1: 0.7852
+- Best validation epoch: 48
+- Final labeled training samples: 4,000
+- Test-time augmentation: original image plus horizontal flip
 
-## Implemented Experiments / Design Changes
+## Experiments
 
-### Experiment 1 — Data Augmentation
-The training pipeline uses:
-- RandomHorizontalFlip
-- RandomRotation(10)
-- ColorJitter for brightness and contrast
+| Experiment | Main change | Validation result |
+|---|---|---|
+| Baseline | Original SimpleCNN, 5 epochs, no augmentation | Acc 0.5550, F1 0.5436 |
+| Baseline extension | Original SimpleCNN with adjusted epochs/LR | Acc 0.5770, F1 0.5615 |
+| Final model | BatchNorm, augmentation, AdamW, cosine schedule, label smoothing | Acc 0.7860, F1 0.7852 |
 
-Validation data uses deterministic normalization without random augmentation.
+## Notes
 
-### Experiment 2 — Regularization
-The final CNN uses:
-- Dropout(0.4)
-- Dropout(0.3)
-- Batch Normalization
-- AdamW with weight decay = 5e-4
-- CrossEntropyLoss with label smoothing = 0.1
-
-### Experiment 3 — Learning-Rate Schedule
-The training configuration uses CosineAnnealingLR to progressively reduce the learning rate during training.
-
-### Experiment 4 — Early Stopping and Best-Checkpoint Selection
-Training uses early stopping. The checkpoint with the best validation accuracy is saved as:
-`best_model_optimized.pth`
-
-For the competition submission, that best checkpoint is loaded before generating predictions.
-
-## Final Architecture
-- 3 convolutional blocks
-- Convolution channels: 8, 16, 32
-- Batch Normalization
-- ReLU activation
-- Max Pooling
-- Fully connected layers: 64 -> 32 -> 5
-- Dropout: 0.4 and 0.3
-- Kaiming initialization
-
-## Results
-The notebook records:
-- **Parameters**: 53,485
-- **Best Validation Accuracy**: 0.8368
-- **Validation F1-macro at the same best-accuracy epoch**: 0.8366
-
-## Important Note
-This report describes the experiments and techniques actually implemented in the notebook.
-No unsupported numeric improvement claims are included for individual ablations.
-
-## Submission Files
-The ZIP must contain exactly:
-- `predictions.csv`
-- `ABLATIONS.md`
+The final checkpoint was selected by validation macro F1. After model selection, a fresh model was trained with all labeled train and validation images. Hidden test labels were not used.
