@@ -3,7 +3,7 @@
 | Rank | Student ID | Student name | Model | Params | Test Acc | Test F1 | Efficiency | Final score | Last submission | Issue |
 | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | usuario_cocyten_29 | Jorge Saul Montes Caceres | SimpleCNN-residual-78K_v3 | 78053 | 0.7784 | 0.780369 | 1.0 | 0.801938 | 2026-08-20T05:32:52Z | #20 |
-| 2 | RicardoTL1975 | Ricardo Torres Lopez | ImprovedCNN_STL5 | 94117 | 0.7772 | 0.777201 | 1.0 | 0.799481 | 2026-08-20T17:00:21Z | #22 |
+| 2 | RicardoTL1975 | Ricardo Torres Lopez | Nayarit_STL5_Improved_V2 | 94117 | 0.7808 | 0.779681 | 1.0 | 0.801937 | 2026-08-20T17:57:07Z | #23 |
 | 3 | jcaquino_utnay | Juan Carlos Aquino Hernández | SimpleCNN-v5-residual | 158277 | 0.8176 | 0.815307 | 0.631804 | 0.797416 | 2026-07-28T04:36:33Z | #4 |
 | 4 | AlexCampos | Alejandro Campos Martínez | SimpleCNN-residual | 94973 | 0.7704 | 0.77106 | 1.0 | 0.793822 | 2026-08-09T00:12:36Z | #8 |
 | 5 | Carlos_Vidrios | Carlos Alberto Vidrios Serrano | CNN_vidrios | 523525 | 0.7832 | 0.785154 | 0.191013 | 0.725349 | 2026-08-13T14:50:13Z | #12 |
