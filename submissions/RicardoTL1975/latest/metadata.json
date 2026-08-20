@@ -1,12 +1,12 @@
 {
   "student_id": "RicardoTL1975",
   "student_name": "Ricardo Torres Lopez",
-  "model_name": "Nayarit_STL5_Improved_V2",
+  "model_name": "CNN_Nayarit_STL5",
   "num_parameters": 94117,
   "validation_accuracy": 0.799,
   "validation_f1_macro": 0.7989,
-  "issue_number": 23,
-  "submitted_at": "2026-08-20T17:57:07Z",
-  "submission_zip_url": "https://github.com/user-attachments/files/31274796/submission.zip",
+  "issue_number": 25,
+  "submitted_at": "2026-08-20T19:18:27Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31277713/submission.zip",
   "notes": ""
 }
