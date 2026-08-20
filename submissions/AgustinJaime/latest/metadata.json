@@ -3,10 +3,10 @@
   "student_name": "Agustin Jaime Navarro",
   "model_name": "SimpleCNN",
   "num_parameters": 93893,
-  "validation_accuracy": 0.577,
-  "validation_f1_macro": 0.5615,
-  "issue_number": 11,
-  "submitted_at": "2026-08-13T06:47:57Z",
-  "submission_zip_url": "https://github.com/user-attachments/files/31016417/submission.zip",
-  "notes": "Modelo Agustin Jaime Navarro."
+  "validation_accuracy": 0.817,
+  "validation_f1_macro": 0.8144,
+  "issue_number": 24,
+  "submitted_at": "2026-08-20T18:56:17Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31276416/submission.zip",
+  "notes": "Mejora de resultados. Con hasta 35 épocas."
 }
