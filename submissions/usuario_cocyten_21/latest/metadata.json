@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_21",
+  "student_name": "Juan Navarrete Guzmán",
+  "model_name": "SimpleCNN",
+  "num_parameters": 97253,
+  "validation_accuracy": 0.688,
+  "validation_f1_macro": 0.6876,
+  "issue_number": 30,
+  "submitted_at": "2026-08-21T19:57:28Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31319870/submission.zip",
+  "notes": ""
+}
