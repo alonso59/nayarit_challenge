@@ -1,54 +1,196 @@
-# Ablation Study
+# Nayarit STL-5 Challenge — Ablation Study
 
-## Student information
+**Student:** Ricardo Torres Lopez  
+**ID:** RicardoTL1975  
+**Model:** ImprovedCNN V2  
+**Development process:** Approximately 25 iterative experiments, starting near a 0.18 score and progressively improving the pipeline to the current model.
 
-- **Student name:** Ricardo Torres Lopez
-- **Student ID:** RicardoTL1975
+---
 
-## Final model
+## 1. Project setup and dataset loading
 
-- **Architecture:** `ImprovedCNN` with three convolution stages (32, 64, and 128 channels), Batch Normalization, SiLU activation, Max Pooling, global average pooling, dropout, and a five-class linear layer.
-- **Trainable parameters:** 94,117
-- **Parameter constraint below 95,000:** PASS
-- **Best validation accuracy without TTA:** 0.7990
-- **Best validation macro F1 without TTA:** 0.7989
-- **Best EMA epoch:** 49
-- **Selected TTA mode:** `none`
-- **Validation accuracy with selected TTA:** 0.7990
-- **Validation macro F1 with selected TTA:** 0.7989
-- **Final fine-tuning samples:** 4,000
-- **Fine-tuning epochs:** 15
-- **Final checkpoint:** `final_stl5_v3_ema_model.pt`
+| Item | Current implementation | Purpose |
+|---|---|---|
+| Dataset discovery | Automatic search for the challenge `dataset` folder | Makes the notebook portable in Colab/local environments |
+| Training set | 3,000 labeled images | Model optimization |
+| Validation set | 1,000 labeled images | Model selection and local evaluation |
+| Test set | 2,500 unlabeled images | Final challenge predictions |
+| Number of classes | 5 | STL-5 challenge classification |
+| Hidden test labels | Never used | Prevents test leakage |
 
-## Experiments
+This section was kept simple and deterministic so that later improvements could be compared fairly.
 
-| Experiment | Main change | Params | Val accuracy | Val F1 macro | Comment |
-|---|---|---:|---:|---:|---|
-| Baseline | Original SimpleCNN, 5 epochs, no active augmentation | 93,893 | 0.5550 | 0.5436 | The model was undertrained and had limited regularization. |
-| Experiment 1 | BatchNorm, SiLU, moderate augmentation, AdamW, cosine scheduler, label smoothing, 50 epochs | 94,117 | 0.7860 | 0.7852 | Longer and more stable training produced the largest improvement over the baseline. |
-| Experiment 2 | Added EMA weight averaging and trained for 60 epochs | 94,117 | 0.7990 | 0.7989 | EMA reduced changes between epochs and improved both validation metrics. |
-| Final V3 | Validation-driven TTA selection and low-LR fine-tuning of the best EMA model with all labeled images | 94,117 | 0.7990 | 0.7989 | TTA is used only when it improves validation F1. Fine-tuning starts from the best checkpoint instead of random weights. |
+---
 
-## Error analysis
+## 2. Reproducibility
 
-The validation confusion matrix indicates:
+| Setting | Value | Reason |
+|---|---:|---|
+| Random seed | 42 | Reproducible experiments |
+| Device | CUDA when available | Faster CNN training |
+| Deterministic setup | Fixed Python, NumPy and PyTorch seeds | Reduces uncontrolled variation |
 
-- The class with the lowest recall is **cat**, with recall 0.6850.
-- The most frequent off-diagonal error is **cat → dog**, with 38 validation images.
-- Per-class recall: airplane=0.8800, bird=0.7450, car=0.9500, cat=0.6850, dog=0.7350.
-- Accuracy and macro F1 are close, which suggests that the model does not obtain its result by ignoring one class.
+A fixed seed was important during the approximately 25 development attempts because it made model changes easier to compare.
 
-## Conclusion
+---
 
-The largest improvement came from replacing the short baseline training with a better optimization and augmentation pipeline. Validation macro F1 increased from 0.5436 to 0.7852. EMA then increased it to 0.7989 while making validation more stable.
+## 3. Dataset preprocessing and augmentation
 
-V3 adds two conservative changes. First, it compares normal inference, horizontal-flip TTA, and translated-plus-flipped TTA on validation, then selects `none` because it obtained the best validation macro F1 (0.7989). Second, the final model starts from the best EMA checkpoint and is fine-tuned with all 4,000 labeled images using a lower learning rate. This preserves the representation learned during model selection while using every public label before hidden-test prediction.
+| Component | Current value / method | Expected contribution |
+|---|---|---|
+| Image size | 96 × 96 | Preserves useful spatial detail |
+| Training batch size | 64 | Good balance between stability and GPU memory |
+| Normalization mean | (0.452328, 0.447057, 0.417794) | Challenge-specific normalization |
+| Normalization std | (0.261057, 0.256317, 0.275009) | Challenge-specific scaling |
+| Random crop | Padding = 8, reflect mode | Translation robustness |
+| Horizontal flip | p = 0.5 | Adds viewpoint diversity |
+| Color jitter | brightness/contrast/saturation = 0.15 | Improves color robustness |
+| Hue jitter | 0.03 | Small color variation |
+| Random erasing | p = 0.15 | Reduces dependence on small local features |
+| Validation augmentation | None | Keeps validation measurement clean |
 
-The final model remains below the parameter limit and uses only one 94,117-parameter network at inference.
+The final augmentation policy is deliberately moderate. Stronger augmentation could reduce training accuracy without necessarily improving hidden-test performance.
 
-## Submission files
+---
 
-The submission ZIP contains exactly:
+## 4. ImprovedCNN architecture
 
-- `predictions.csv`
-- `ABLATIONS.md`
+| Layer / block | Configuration | Main role |
+|---|---|---|
+| Conv block 1 | Conv 3→32 + BatchNorm + SiLU + MaxPool | Low-level feature extraction |
+| Conv block 2 | Conv 32→64 + BatchNorm + SiLU + MaxPool | Mid-level feature extraction |
+| Conv block 3 | Conv 64→128 + BatchNorm + SiLU | Higher-level features |
+| Pooling | AdaptiveAvgPool2d(1) | Compact global representation |
+| Regularization | Dropout = 0.20 | Reduces overfitting |
+| Classifier | Linear 128→5 | Five-class prediction |
+| Trainable parameters | 94,117 | Below the 95,000-parameter limit |
+| Parameter constraint | PASS | Challenge requirement satisfied |
+
+The architecture reaches 94,117 trainable parameters, using almost all of the available parameter budget without exceeding the challenge limit.
+
+---
+
+## 5. Stable training with EMA
+
+| Training component | Current setting | Contribution |
+|---|---|---|
+| Maximum epochs | 60 | Gives the scheduler enough time to converge |
+| Loss | CrossEntropyLoss | Multi-class classification objective |
+| Label smoothing | 0.05 | Reduces overconfidence |
+| Optimizer | AdamW | Stable optimization with decoupled weight decay |
+| Initial learning rate | 1.5e-3 | Effective starting point for this CNN |
+| Weight decay | 5e-4 | Regularization |
+| LR scheduler | CosineAnnealingLR | Smooth learning-rate reduction |
+| Minimum LR | 3e-5 | Allows late-stage fine tuning |
+| Gradient clipping | max norm = 5.0 | Protects against unstable updates |
+| EMA decay | 0.995 | Smooths model weights |
+| Checkpoint criterion | Validation macro F1 | Prioritizes balanced class performance |
+| Best EMA epoch | 49 | Best validation checkpoint |
+
+### Current validation result
+
+| Metric | Best value |
+|---|---:|
+| Validation accuracy | **0.7990** |
+| Validation macro F1 | **0.7989** |
+| Estimated local combined score | **1.1299** |
+
+The current run reached its best checkpoint at epoch 49. Accuracy and macro F1 are almost identical, which suggests that performance is reasonably balanced across the five classes.
+
+---
+
+## 6. Learning curves and confusion matrix
+
+| Diagnostic | What it checks |
+|---|---|
+| Training accuracy curve | Whether the model continues learning |
+| Validation accuracy curve | Generalization performance |
+| Validation macro-F1 curve | Balanced performance across classes |
+| Training loss curve | Optimization stability |
+| Confusion matrix | Which classes are most frequently confused |
+
+The learning curves show a gradual improvement rather than a single unstable jump. EMA also helps reduce epoch-to-epoch variation.
+
+---
+
+## 7. Final training using all labeled images
+
+| Item | Current implementation |
+|---|---|
+| Labeled images used | 4,000 |
+| Training source | Original train + validation folders |
+| Final model initialization | Fresh ImprovedCNN |
+| Final weight averaging | EMA, decay = 0.995 |
+| Final epochs | `max(25, best_epoch + 5)` = 54 |
+| Optimizer | AdamW |
+| Scheduler | CosineAnnealingLR |
+| Hidden test labels | Not used |
+
+After model selection, a fresh network is trained on all available labeled images. This increases the amount of supervised data available to the final challenge model.
+
+---
+
+## 8. Multi-view test-time augmentation
+
+| TTA component | Current setting |
+|---|---|
+| Padding | 4 pixels, reflect mode |
+| Translation views | 5 |
+| Horizontal flip | Applied to every translated view |
+| Total views per image | 10 |
+| Combination | Mean of logits |
+| Extra trainable parameters | 0 |
+
+TTA improves prediction robustness without changing the architecture or violating the parameter constraint.
+
+### Test prediction distribution
+
+| Predicted class | Number of images |
+|---:|---:|
+| 0 | 504 |
+| 1 | 445 |
+| 2 | 516 |
+| 3 | 488 |
+| 4 | 547 |
+| **Total** | **2,500** |
+
+The distribution does not show an obvious collapse toward a single class.
+
+---
+
+## 9. Submission generation
+
+| Requirement | Status |
+|---|---|
+| `predictions.csv` generated | PASS |
+| Columns exactly `id,y_pred` | PASS |
+| 2,500 unique test IDs | PASS |
+| Predictions restricted to classes 0–4 | PASS |
+| Test order matches sample submission | PASS |
+| `ABLATIONS.md` included | PASS |
+| ZIP contains only required files | PASS |
+
+---
+
+## Development history — approximately 25 attempts
+
+This final notebook is the result of an iterative development process. I started with an early score of approximately **0.18** and made around **25 training/submission attempts**. I did not retain a reliable metric log for every individual attempt, so intermediate scores are intentionally not invented here.
+
+| Development stage | Approx. attempt range | Main focus | Result |
+|---|---:|---|---|
+| Initial experiments | 1 | Basic CNN pipeline | Score around **0.18** |
+| Architecture exploration | 2–8 | Channel sizes, activations and pooling | Progressive improvement |
+| Generalization tuning | 9–14 | Normalization and augmentation | Better validation stability |
+| Optimization tuning | 15–19 | AdamW, learning rate and regularization | More consistent convergence |
+| Stability improvements | 20–23 | EMA, label smoothing and cosine scheduling | Smaller metric fluctuations |
+| Final refinement | 24–25 | Full-data retraining and multi-view TTA | Current model: Acc **0.7990**, F1 **0.7989** |
+
+The main lesson from these iterations is that the gain did not come from one isolated hyperparameter. The strongest result came from combining a compact architecture, moderate augmentation, stable optimization, EMA checkpointing, full-data retraining and test-time augmentation.
+
+---
+
+## Final conclusion
+
+The current ImprovedCNN V2 provides the strongest result obtained during my approximately 25 iterations while staying within the challenge constraint of fewer than 95,000 trainable parameters. The validation results of **0.7990 accuracy** and **0.7989 macro F1** indicate strong and balanced classification performance.
+
+Because this version already performs well, I would preserve it as the main submission rather than make aggressive architectural changes. Future experiments should be isolated and compared against this checkpoint instead of replacing it directly.
