@@ -10,6 +10,7 @@
 | 6 | Carlos_Vidrios | Carlos Alberto Vidrios Serrano | CNN_vidrios | 523525 | 0.7832 | 0.785154 | 0.191013 | 0.725349 | 2026-08-13T14:50:13Z | #12 |
 | 7 | 49 | Stephany Anahí López Lizárraga | SimpleCNN | 61189 | 0.6712 | 0.66671 | 1.0 | 0.700937 | 2026-07-14T20:01:45Z | #3 |
 | 8 | Student_41 | Alonso Lopez | SimpleCNN + BatchNorm2d | 94341 | 0.6532 | 0.641658 | 1.0 | 0.6798 | 2026-08-17T19:22:45Z | #14 |
-| 9 | UTNRaulBonillaChallengue | Sergio Raul Bonilla Alejo | SimpleCNN3capas | 93893 | 0.5964 | 0.586361 | 1.0 | 0.629733 | 2026-08-13T06:33:12Z | #9 |
-| 10 | usuario_cocyten_17 | Christian Ulises Mora Figueroa | CNN simple | 19909 | 0.5548 | 0.518529 | 1.0 | 0.573931 | 2026-08-08T20:04:29Z | #7 |
-| 11 | demo_random_submission | Demo Random Submission | RandomBaseline | 123456 | 0.212 | 0.211921 | 0.810005 | 0.271745 | 2026-07-04T14:11:01Z | #2 |
+| 9 | jrg | Jorge Sosa Sales | SimpleCNN | 88781 | 0.6488 | 0.635113 | 1.0 | 0.674339 | 2026-08-21T05:41:16Z | #27 |
+| 10 | UTNRaulBonillaChallengue | Sergio Raul Bonilla Alejo | SimpleCNN3capas | 93893 | 0.5964 | 0.586361 | 1.0 | 0.629733 | 2026-08-13T06:33:12Z | #9 |
+| 11 | usuario_cocyten_17 | Christian Ulises Mora Figueroa | CNN simple | 19909 | 0.5548 | 0.518529 | 1.0 | 0.573931 | 2026-08-08T20:04:29Z | #7 |
+| 12 | demo_random_submission | Demo Random Submission | RandomBaseline | 123456 | 0.212 | 0.211921 | 0.810005 | 0.271745 | 2026-07-04T14:11:01Z | #2 |

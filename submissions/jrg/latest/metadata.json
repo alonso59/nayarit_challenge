@@ -1,0 +1,12 @@
+{
+  "student_id": "jrg",
+  "student_name": "Jorge Sosa Sales",
+  "model_name": "SimpleCNN",
+  "num_parameters": 88781,
+  "validation_accuracy": 0.659,
+  "validation_f1_macro": 0.6491,
+  "issue_number": 27,
+  "submitted_at": "2026-08-21T05:41:16Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31291342/submission.zip",
+  "notes": "An activity involving significant knowledge and code analysis, requiring a high-performance computer."
+}
