@@ -1,0 +1,12 @@
+{
+  "student_id": "Claudia_TecTepic",
+  "student_name": "Claudia Guadalupe Quezada López",
+  "model_name": "ResidualCNN_SWA",
+  "num_parameters": 78053,
+  "validation_accuracy": 0.815,
+  "validation_f1_macro": 0.8123,
+  "issue_number": 28,
+  "submitted_at": "2026-08-21T14:30:17Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31309454/submission.zip",
+  "notes": ""
+}
