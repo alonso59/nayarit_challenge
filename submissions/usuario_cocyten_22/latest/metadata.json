@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_22",
+  "student_name": "Antonio Navarrete Guzmán",
+  "model_name": "SimpleCNN-ResBlock",
+  "num_parameters": 99669,
+  "validation_accuracy": 0.79,
+  "validation_f1_macro": 0.7895,
+  "issue_number": 33,
+  "submitted_at": "2026-08-22T05:01:39Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31327920/submission.zip",
+  "notes": ""
+}
