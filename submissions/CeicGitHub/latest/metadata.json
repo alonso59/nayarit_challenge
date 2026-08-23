@@ -1,0 +1,12 @@
+{
+  "student_id": "CeicGitHub",
+  "student_name": "CesarEduardoIndaCeniceros_Usuario31",
+  "model_name": "cesar_inda_cnn",
+  "num_parameters": 96605,
+  "validation_accuracy": 0.86,
+  "validation_f1_macro": 0.859036,
+  "issue_number": 38,
+  "submitted_at": "2026-08-23T05:36:55Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31343734/submission.zip",
+  "notes": ""
+}
