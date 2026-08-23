@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_45",
+  "student_name": "Jose Ramon Sanchez Acosta",
+  "model_name": "SimpleCNN-residual-v3",
+  "num_parameters": 99221,
+  "validation_accuracy": 0.801,
+  "validation_f1_macro": 0.8011,
+  "issue_number": 36,
+  "submitted_at": "2026-08-23T00:16:04Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31341309/submission.zip",
+  "notes": ""
+}
