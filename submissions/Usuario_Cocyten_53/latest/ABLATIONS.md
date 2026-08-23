@@ -106,3 +106,66 @@ Se retiro la cuarta convolucion que no habia aportado mejora, se redujo la inten
 Se redujo el Dropout de 0.25 a 0.20 y se agrego una reduccion cosenoidal del learning rate para afinar los pesos al final. Frente al Modelo 4, el accuracy subio 0.30 puntos porcentuales, el F1 macro subio 0.55 puntos y el AUROC paso de 0.9123 a 0.9191. Esta version obtiene el mejor balance global y se selecciona como modelo final para generar `predictions.csv`.
 
 -----------------------------------------------------------------------------------
+
+## Modelo numero: 6
+
+- Arquitectura: Modelo 5 con una segunda convolucion Conv2d-BatchNorm-ReLU de 64 canales en el bloque de alto nivel.
+- Epocas entrenadas: 5
+- Numero de parametros: 135,365
+- Accuracy de validacion: 0.6800
+- F1 macro de validacion: 0.6689
+- Checkpoint usado: `output/20260822_222356/checkpoints/best.pt`
+
+## Datos del modelo 6
+
+| Params | Val accuracy | Train accuracy | Val F1 macro | Best.pt |
+|---:|---:|---:|---:|---|
+| 135,365 | 0.6800 | 0.6646 | 0.6689 | `output/20260822_222356/checkpoints/best.pt` |
+
+## Conclusion del modelo 6
+
+Se agrego una segunda convolucion de 64 canales para mejorar los rasgos semanticos de las clases animales. Frente al Modelo 5, el accuracy bajo 1.60 puntos porcentuales y el F1 macro bajo 2.42 puntos. La perdida mejoro de 0.7322 a 0.7156 y el AUROC de 0.9191 a 0.9196, pero el balance de clasificacion fue inferior; la capa adicional no se conserva.
+
+-----------------------------------------------------------------------------------
+
+## Modelo numero: 7
+
+- Arquitectura: se recupera la arquitectura del Modelo 5 y se moderan nuevamente rotacion, afin, color, degradacion y recorte.
+- Epocas entrenadas: 5
+- Numero de parametros: 98,309
+- Accuracy de validacion: 0.6900
+- F1 macro de validacion: 0.6886
+- Checkpoint usado: `output/20260822_222916/checkpoints/best.pt`
+
+## Datos del modelo 7
+
+| Params | Val accuracy | Train accuracy | Val F1 macro | Best.pt |
+|---:|---:|---:|---:|---|
+| 98,309 | 0.6900 | 0.6709 | 0.6886 | `output/20260822_222916/checkpoints/best.pt` |
+
+## Conclusion del modelo 7
+
+Se retiro la convolucion adicional y se redujo la intensidad de los aumentos para aprovechar mejor las 5 epocas. Frente al Modelo 6, el accuracy subio 1.00 punto porcentual y el F1 macro subio 1.97 puntos. Quedo 0.60 y 0.45 puntos por debajo del Modelo 5, aunque mejoro la perdida a 0.7142 y el AUROC a 0.9203.
+
+-----------------------------------------------------------------------------------
+
+## Modelo numero: 8
+
+- Arquitectura: Modelo 7 con perdida CrossEntropy ponderada por clase; pesos `[1.0, 1.0, 1.0, 1.1, 1.25]` para airplane, bird, car, cat y dog.
+- Epocas entrenadas: 5
+- Numero de parametros: 98,309
+- Accuracy de validacion: 0.6910
+- F1 macro de validacion: 0.6908
+- Checkpoint usado: `output/20260822_223420/checkpoints/best.pt`
+
+## Datos del modelo 8
+
+| Params | Val accuracy | Train accuracy | Val F1 macro | Best.pt |
+|---:|---:|---:|---:|---|
+| 98,309 | 0.6910 | 0.6783 | 0.6908 | `output/20260822_223420/checkpoints/best.pt` |
+
+## Conclusion del modelo 8
+
+Se ponderaron moderadamente `cat` y `dog`, las clases con menor recall en el Modelo 7. Frente al Modelo 7, el accuracy subio 0.10 puntos porcentuales, el F1 macro subio 0.22 puntos, la perdida bajo de 0.7142 a 0.7099 y el AUROC subio de 0.9203 a 0.9208. Aunque el Modelo 5 conserva el mayor accuracy y F1 global, el Modelo 8 obtiene la mejor perdida y el mejor AUROC de las ocho iteraciones.
+
+-----------------------------------------------------------------------------------
