@@ -3,10 +3,10 @@
   "student_name": "Hector Zid Bonilla Correa",
   "model_name": "BonillaCNN",
   "num_parameters": 98309,
-  "validation_accuracy": 0.691,
-  "validation_f1_macro": 0.6908,
-  "issue_number": 40,
-  "submitted_at": "2026-08-23T05:54:18Z",
-  "submission_zip_url": "https://github.com/user-attachments/files/31343875/submission_zip.zip",
+  "validation_accuracy": 0.696,
+  "validation_f1_macro": 0.6931,
+  "issue_number": 41,
+  "submitted_at": "2026-08-23T06:15:58Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31344045/submission_zip.zip",
   "notes": "Este proyecto de crear y entrenar una red convolucional simple realmente me ayudó a comprender este tipo de redes neuronales desde los cimientos hasta su forma final. Tuve problemas durante el entrenamiento, ya que entrenaba y modificaba versiones del modelo que no mostraban gran diferencia en el desempeño. No fue hasta que incorporé mejoras de modelos anteriores o partes antiguas de los Notebooks que habíamos trabajado antes, que comencé a escalar hasta llegar a la versión que estoy entregando ahora."
 }
