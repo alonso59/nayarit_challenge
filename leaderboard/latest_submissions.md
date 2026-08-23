@@ -13,7 +13,7 @@
 | 9 | usuario_cocyten_55 | Timoteo Talamantes | ResNet-18 | 11179077 | 0.8792 | 0.879917 | 0.008945 | 0.792677 | 2026-08-22T05:42:45Z | #34 |
 | 10 | usuario_cocyten_22 | Antonio Navarrete Guzmán | SimpleCNN-ResBlock | 99669 | 0.7672 | 0.764908 | 1.0 | 0.788876 | 2026-08-22T05:01:39Z | #33 |
 | 11 | Carlos_Vidrios | Carlos Alberto Vidrios Serrano | CNN_vidrios | 523525 | 0.7832 | 0.785154 | 0.191013 | 0.725349 | 2026-08-13T14:50:13Z | #12 |
-| 12 | Usuario_Cocyten_53 | Hector Zid Bonilla Correa | BonillaCNN | 98309 | 0.6736 | 0.66947 | 1.0 | 0.703349 | 2026-08-23T05:06:14Z | #37 |
+| 12 | Usuario_Cocyten_53 | Hector Zid Bonilla Correa | BonillaCNN | 98309 | 0.6904 | 0.689636 | 1.0 | 0.720825 | 2026-08-23T05:54:18Z | #40 |
 | 13 | 49 | Stephany Anahí López Lizárraga | SimpleCNN | 61189 | 0.6712 | 0.66671 | 1.0 | 0.700937 | 2026-07-14T20:01:45Z | #3 |
 | 14 | usuario_cocyten_21 | Juan Navarrete Guzmán | SimpleCNN | 97253 | 0.6656 | 0.660532 | 1.0 | 0.695492 | 2026-08-21T19:57:28Z | #30 |
 | 15 | usuario_cocyten_40 | Emmanuel Modesto Orozco | SimpleCNN | 94341 | 0.6576 | 0.658684 | 1.0 | 0.692599 | 2026-08-22T02:06:58Z | #31 |
