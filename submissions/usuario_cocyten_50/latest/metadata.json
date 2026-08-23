@@ -1,0 +1,12 @@
+{
+  "student_id": "usuario_cocyten_50",
+  "student_name": "Josue Alejandro Murillo Orozco",
+  "model_name": "SmallCNN",
+  "num_parameters": 94341,
+  "validation_accuracy": 0.6643,
+  "validation_f1_macro": 0.66,
+  "issue_number": 45,
+  "submitted_at": "2026-08-23T07:07:00Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31344483/submission.zip",
+  "notes": ""
+}
