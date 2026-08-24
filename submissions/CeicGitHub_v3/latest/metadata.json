@@ -1,0 +1,12 @@
+{
+  "student_id": "CeicGitHub_v3",
+  "student_name": "cesar eduardo inda ceniceros",
+  "model_name": "sam_v3_tta_resnetnew",
+  "num_parameters": 94676,
+  "validation_accuracy": 0.9336,
+  "validation_f1_macro": 0.923637,
+  "issue_number": 48,
+  "submitted_at": "2026-08-24T07:40:40Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31365658/submission.zip",
+  "notes": ""
+}
