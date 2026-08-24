@@ -1,0 +1,12 @@
+{
+  "student_id": "CeicGitHub_User31",
+  "student_name": "Cesar Eduardo Inda Ceniceros",
+  "model_name": "cnn_with_sam",
+  "num_parameters": 94676,
+  "validation_accuracy": 0.885,
+  "validation_f1_macro": 0.88516,
+  "issue_number": 47,
+  "submitted_at": "2026-08-24T07:30:02Z",
+  "submission_zip_url": "https://github.com/user-attachments/files/31365161/submission.zip",
+  "notes": ""
+}
